@@ -1,0 +1,27 @@
+{
+  "name": "lesson13-employee-tracker",
+  "version": "1.0.0",
+  "description": "Creating a content management systems (CMS) (interface that allows non-developers to easily view and interact with information stored in databases).",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tahir-arslan/employee-tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tahir-arslan/employee-tracker/issues"
+  },
+  "homepage": "https://github.com/tahir-arslan/employee-tracker#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "mysql2": "^2.3.3"
+  },
+  "devDependencies": {
+    "jest": "^29.0.3"
+  }
+}
