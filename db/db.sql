@@ -1,3 +1,3 @@
-DROP DATABASE IF EXISTS directory;
-CREATE DATABASE directory;
-USE directory;
+DROP DATABASE IF EXISTS employee_tracking;
+CREATE DATABASE employee_tracking;
+USE employee_tracking;

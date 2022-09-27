@@ -1,5 +1,5 @@
 -- pre-populate tables
-INSERT INTO department(name)
+INSERT INTO departments(name)
 VALUES
     ('Marketing'),
     ('Accounting'),
