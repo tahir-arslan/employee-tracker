@@ -1,55 +1,41 @@
 # Employee Tracker
-Creating a content management systems (CMS) (interface that allows non-developers to easily view and interact with information stored in databases).
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 
-AS A business owner
-I WANT to be able to view and manage the departments, roles, and employees in my company
-SO THAT I can organize and plan my business
+## Description
+The Employee Tracker is a Content Management System that allows for non-developers to be able to view and manipulate data inside of a database. For this app, the user input and interface is captured/displayed through Inquirer.
 
-WHEN I start the application
-THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role
+Node.js, Inquirer, and MySQL are the Javascript libraries used to create this CMS interface. The user has the ability to be able to perform CRUD operations on Employee data (view all, add new, update existing, and delete existing employee), Roles (view all, create new, delete existing role), and Departments (view all, create new, delete existing department).
 
-WHEN I choose to view all departments
-THEN I am presented with a formatted table showing department names and department ids
+A [Project Showcase](https://drive.google.com/file/d/1T60MoujaiCD7Wv1l46BskVOhcW0mFbOL/view) is available to see how this application performs.
 
-WHEN I choose to view all roles
-THEN I am presented with the job title, role id, the department that role belongs to, and the salary for that role
+#### Screenshot
+![Screenshot](/public/assets/images/screenshot.png)
 
-WHEN I choose to view all employees
-THEN I am presented with a formatted table showing employee data, including employee ids, first names, last names, job titles, departments, salaries, and managers that the employees report to
+## Table of Contents
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [License(s)](#licenses)
+4. [Questions](#questions)
 
-WHEN I choose to add a department
-THEN I am prompted to enter the name of the department and that department is added to the database
+## Installation
+Clone the repo and open the project. In terminal, execute the command `npm i`. This will install all the dependencies required for this application to work.
 
-WHEN I choose to add a role
-THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
+## Usage
+1. Once the dependancies are installed, the database must be created along with the tables, following by seeding the tables.
+2. Log in to MySQL by executing `mysql -u root -p`. After entering your MySQL password, execute the following three codes in order:
+```node
+source db/db.sql
+source db/schema.sql
+source db/seeds.sql
+```
+3. Now exit MySQL by entering `quit`.
+4. Establish a connection with the database by renaming `db/connect_EXAMPLE.js` to `db/connection.js`, then enter in your MySQL password and save the file.
+5. Finally, begin using the app by starting up Node.js with `node app.js`.
 
-WHEN I choose to add an employee
-THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
+## License(s)
+MIT
 
-WHEN I choose to update an employee role
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+## Questions
+My name is Arslan Tahir, the creator of this project. If you have any issues, comments, concerns, or questions regarding this project, feel free to contact me at tahir.arslan@gmail.com.
 
-department
-    id: INT PRIMARY KEY
-    name: VARCHAR(30) to hold department name
-
-role
-    id: INT PRIMARY KEY
-    title: VARCHAR(30) to hold role title
-    salary: DECIMAL to hold role salary
-    department_id: INT to hold reference to department role belongs to
-
-employee
-    id: INT PRIMARY KEY
-    first_name: VARCHAR(30) to hold employee first name
-    last_name: VARCHAR(30) to hold employee last name
-    role_id: INT to hold reference to employee role
-    manager_id: INT to hold reference to another employee that is the manager of the current employee (null if the employee has no manager)
-
-Bonus
-Try to add some additional functionality to your application, such as the ability to do the following:
-    Update employee managers.
-    View employees by manager.
-    View employees by department.
-    Delete departments, roles, and employees.
-    View the total utilized budget of a department—in other words, the combined salaries of all employees in that department.
+If you would like to check out my other projects, feel free to explore my !(GitHub Page)[https://github.com/tahir-arslan/].

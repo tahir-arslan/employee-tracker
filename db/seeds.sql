@@ -27,5 +27,5 @@ VALUES
     ('Dustin', 'Henderson', '6', '5'),
     ('Steve', 'Harrington', '7','0'),
     ('Nancy', 'Wheeler', '8', '0'),
-    ('Jonathan', 'Byers', '9', '1'),
+    ('Jonathan', 'Byers', '4', '1'),
     ('Robin', 'Buckley', '8', '2');
