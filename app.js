@@ -49,10 +49,10 @@ Please select an option:`,
                 "Roles (View All)",
                 "Role (Add New)",
                 "Role (Delete)",
-                // "Departments (View All)",
-                // "Department (Add New)",
-                // "Department (Delete)",
-                // '--- Exit ---'
+                "Departments (View All)",
+                "Department (Add New)",
+                "Department (Delete)",
+                '--- Exit ---'
             ]
         }
     ]).then(function (pick) {
@@ -117,12 +117,12 @@ function addEmployee () {
         {
             type: 'input',
             name: 'first_name',
-            message: 'What is their first name?',
+            message: "What is the new employee's first name?",
         },
         {
             type: 'input',
             name: 'last_name',
-            message: 'What is the their last name?',
+            message: "What is the new employee's last name?",
         }, 
     ])
     .then(answer => {
@@ -134,42 +134,42 @@ function addEmployee () {
                 {
                     type: 'list',
                     name: 'role',
-                    message: "What is the employee's role?",
+                    message: "What is the new employee's role?",
                     choices: roles
                 }
             ])
-        .then (rolechoice  => {
-            const role = rolechoice.role;
-            criteria.push(role);
-            const managerSQL = `SELECT * FROM employee`;
-            db.query(managerSQL, (err, data) => {
-                const managers = data.map(({id, first_name, last_name}) => ({name: first_name + " " + last_name, value:id}));
-                inquirer.prompt([
-                    {
-                    type: 'list',
-                    name: 'manager',
-                    message: "Who is the employee's manager?",
-                    choices: managers
-                    }
-                ])
-                .then (managerChoice => {
-                    const manager = managerChoice.manager;
-                    criteria.push(manager);
-                    const sql = `INSERT INTO employee (first_name, last_name, roles_id, manager_id)
-                    VALUES (?,?,?,?)`
-                    db.query(sql, criteria, (err, result) => 
+            .then (rolechoice  => {
+                const role = rolechoice.role;
+                criteria.push(role);
+                const managerSQL = `SELECT * FROM employee`;
+                db.query(managerSQL, (err, data) => {
+                    const managers = data.map(({id, first_name, last_name}) => ({name: first_name + " " + last_name, value:id}));
+                    inquirer.prompt([
                         {
-                            if (err) {
-                                console.log(err.message);
-                                return;
-                            }
-                        console.log("You have added the new employee to the database.");
-                        startPrompt();
+                        type: 'list',
+                        name: 'manager',
+                        message: "Who is the new employee's manager?",
+                        choices: managers
                         }
-                    )
+                    ])
+                    .then (managerChoice => {
+                        const manager = managerChoice.manager;
+                        criteria.push(manager);
+                        const sql = `INSERT INTO employee (first_name, last_name, roles_id, manager_id)
+                        VALUES (?,?,?,?)`
+                        db.query(sql, criteria, (err, result) => 
+                            {
+                                if (err) {
+                                    console.log(err.message);
+                                    return;
+                                }
+                            console.log("You have added the new employee to the database.");
+                            viewAllEmployees();
+                            }
+                        )
+                    })
                 })
             })
-        })
         })
     })
 };
@@ -210,8 +210,8 @@ function updateEmployee() {
                             console.log(err.message);
                             return;
                         }
-                        console.log("You have updated the employee's role");
-                        startPrompt();
+                        console.log("You have updated the employee's role.");
+                        viewAllEmployees();
                     }) 
                 })
             })
@@ -240,7 +240,7 @@ function deleteEmployee() {
                     return;
                 }
                 console.log("You have deleted that employee.");
-                startPrompt();
+                viewAllEmployees();
             })
         })
     })
@@ -249,9 +249,9 @@ function deleteEmployee() {
 // ROLE CRD OPERATIONS
 function viewAllRoles (){
     let sqlViewRoles = `SELECT role.id AS Id, role.title AS Role, department.name AS department, role.salary AS Salary
-                FROM role
-                LEFT JOIN department
-                ON role.department_id = department.id `;
+        FROM role
+        LEFT JOIN department
+        ON role.department_id = department.id `;
     db.query(sqlViewRoles, (err, res) => {
         if (err) {
             console.log(err);
@@ -267,12 +267,12 @@ function addRole () {
         {
             type:'input',
             name: 'role',
-            message: 'Please enter the role you wish to add :',
+            message: 'Please enter the role you wish to add: ',
         },
         {
             type: 'input',
             name: 'salary',
-            message: "Please enter the salary for the role (ie: 125000) :",
+            message: "Please enter the salary for the role (ie: 125000): ",
         }
     ])
     .then(roleChoice => {
@@ -299,7 +299,7 @@ function addRole () {
                         return;
                     }
                 console.log("You have added a new role.")
-                startPrompt();
+                viewAllRoles();
                 })
             })
         })
@@ -326,11 +326,71 @@ function deleteRole() {
                     console.log(err.message);
                     return;
                 }
-                console.log("You have deleted that role");
-                startPrompt()
+                console.log("You have deleted that role.");
+                viewAllRoles()
             })
         })
     })
 }
 
 // DEPARTMENT CRD OPERATIONS
+function viewAllDepartments() {
+    const sqlViewDepartments = `SELECT department.id AS ID, department.name as Department FROM department`;
+    db.query(sqlViewDepartments, (err, results) =>{
+        if (err) {
+            console.log(err);
+            return;
+        }
+        console.table(results);
+        startPrompt();
+    })
+}
+
+function addDepartment() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'department',
+            message: "Please Enter the name of the department you want to add: "
+        },
+    ])
+    .then(departmentChoice => {
+        const criteria =[departmentChoice.department];
+        const departmentAddSql = 'INSERT INTO department (name) VALUES(?)'
+        db.query(departmentAddSql, criteria, (err, result) =>{
+            if(err) {
+                res.status(500).json({error: err.message});
+                return;
+            }
+            console.log("You have added a new department.");
+            viewAllDepartments();
+        });
+    });
+};
+
+function deleteDepartment() {
+    const departmentSql = `SELECT * FROM department`;
+    db.query(departmentSql, (err, data) => {
+    const departments = data.map(({id, name}) =>({name: name, value:name}));
+    inquirer.prompt([
+        {
+            type: 'list',
+            name: 'department',
+            message: "Which department would you like to delete?",
+            choices: departments
+        }
+    ])
+    .then (departmentChoice => {
+        const criteria = [departmentChoice.department];
+        const deleteDepartmentSql = `DELETE FROM department WHERE department.name = ?`;
+        db.query(deleteDepartmentSql, criteria, (err, result) => {
+            if(err) {
+                console.log(err.message);
+                return;
+            }
+            console.log("You have deleted that department.");
+            viewAllDepartments();
+           })
+        })
+    })
+};
